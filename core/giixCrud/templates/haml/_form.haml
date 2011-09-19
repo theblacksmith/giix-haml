@@ -23,6 +23,7 @@
 	
 <?php foreach ($this->tableSchema->columns as $column): ?>
 <?php 	if (!$column->autoIncrement): ?>
+
 		%li.field
 			= <?php echo $this->generateActiveLabel($this->modelClass, $column)."\n"; ?>
 			- <?php echo $this->generateActiveField($this->modelClass, $column)."\n"; ?>
@@ -32,6 +33,7 @@
 	
 <?php foreach ($this->getRelations($this->modelClass) as $relation): ?>
 <?php 	if ($relation[1] == GxActiveRecord::HAS_MANY || $relation[1] == GxActiveRecord::MANY_MANY): ?>
+
 		%li.field
 			%label= GxHtml::encode($model->getRelationLabel('<?php echo $relation[0]; ?>'));
 			- <?php echo $this->generateActiveRelationField($this->modelClass, $relation); ?>

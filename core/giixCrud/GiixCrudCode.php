@@ -9,7 +9,7 @@
  * @license http://giix.org/license/ New BSD License
  */
 Yii::import('system.gii.generators.crud.CrudCode');
-Yii::import('ext.giix-core.helpers.*');
+Yii::import('ext.giix.core.helpers.*');
 
 /**
  * GiixCrudCode is the model for giix crud generator.
@@ -31,6 +31,40 @@ class GiixCrudCode extends CrudCode {
 	 */
 	public $baseControllerClass = 'GxController';
 
+	/**
+	 * Overrides the parent prepare() method to change the extension of the files for haml template
+	 */
+	public function prepare() {
+		//parent::prepare();
+		
+		$this->files=array();
+		$templatePath=$this->templatePath;
+		$controllerTemplateFile=$templatePath.DIRECTORY_SEPARATOR.'controller.php';
+
+		$this->files[]=new CCodeFile(
+			$this->controllerFile,
+			$this->render($controllerTemplateFile)
+		);
+
+		$files=scandir($templatePath);
+		foreach($files as $file)
+		{
+			$ext = CFileHelper::getExtension($file);
+			if(is_file($templatePath.'/'.$file) && ($ext==='php' || $ext === 'haml') && $file!=='controller.php')
+			{
+				$this->files[]=new CCodeFile(
+					$this->viewPath.DIRECTORY_SEPARATOR.$file,
+					$this->render($templatePath.'/'.$file)
+				);
+			}
+		}
+		
+		/*
+    foreach($this->files as $file) if(substr_compare($file->path, 'Controller.php', -strlen('Controller.php')) !== 0)
+      $file->path = str_replace('.php', '.haml', $file->path);
+      */
+	}
+	
 	/**
 	 * Adds the new model attributes (class properties) to the rules.
 	 * #MethodTracker

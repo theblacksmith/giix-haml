@@ -45,7 +45,7 @@ in gii for security.
 
 For more information see the gii documentation at "http://www.yiiframework.com/doc/api/GiiModule":http://www.yiiframework.com/doc/api/GiiModule.
 
-Additionaly, you may remove the entire 'giix-core' directory and generator
+Additionaly, you may remove the entire 'giix.core' directory and generator
 configuration (step 2 above) when releasing your Web application for improved
 security.
 
