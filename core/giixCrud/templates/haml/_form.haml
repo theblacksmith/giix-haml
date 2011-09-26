@@ -5,11 +5,18 @@
  */
  $ajax = ($this->enable_ajax_validation) ? 'true' : 'false';
 ?>
-.form
+:php
+	$publishedAsset = Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.sass'). DIRECTORY_SEPARATOR . 'form.sass');
+	Yii::app()->clientScript->registerCSSFile($publishedAsset);
+
+.form(class="#{$this->action->id}")
 	:php
 		$form = $this->beginWidget('GxActiveForm', array(
 			'id' => '<?php echo $this->class2id($this->modelClass); ?>-form',
 			'enableAjaxValidation' => <?php echo $ajax; ?>,
+			'htmlOptions' => array(
+				'class' => $this->action->id
+			),
 		));
 
 	%p.note
@@ -20,21 +27,20 @@
 	= $form->errorSummary($model)
 	
 	%ul.fields-list
-	
+		
 <?php foreach ($this->tableSchema->columns as $column): ?>
-<?php 	if (!$column->autoIncrement): ?>
-
+<?php 	if ($this->shouldRenderColumn($column)): ?>
 		%li.field
 			= <?php echo $this->generateActiveLabel($this->modelClass, $column)."\n"; ?>
 			- <?php echo $this->generateActiveField($this->modelClass, $column)."\n"; ?>
 			= $form->error($model,'<?php echo $column->name ?>');
 <?php 	endif; ?>
 <?php endforeach; ?>
-	
+		
 <?php foreach ($this->getRelations($this->modelClass) as $relation): ?>
 <?php 	if ($relation[1] == GxActiveRecord::HAS_MANY || $relation[1] == GxActiveRecord::MANY_MANY): ?>
 
-		%li.field
+		%li.field.relation
 			%label= GxHtml::encode($model->getRelationLabel('<?php echo $relation[0]; ?>'));
 			- <?php echo $this->generateActiveRelationField($this->modelClass, $relation); ?>
 <?php 	endif; ?>

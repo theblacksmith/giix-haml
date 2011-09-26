@@ -42,7 +42,7 @@ class GxActiveForm extends CActiveForm {
 	 * @return string The generated checkbox list
 	 */
 	public function enumDropDownList($model, $attribute, $htmlOptions = array()) {
-		return GxHtml::activeDropDownList ( $model, $attribute, $htmlOptions );
+		return GxHtml::enumDropDownList( $model, $attribute, $htmlOptions );
 	}
 	
 	/**

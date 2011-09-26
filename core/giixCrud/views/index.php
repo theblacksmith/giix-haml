@@ -105,4 +105,14 @@ $('#{$class}_model').bind('keyup change', function(){
 		<?php echo $form->error($model,'baseControllerClass'); ?>
 	</div>
 
+	<div class="row sticky">
+		<?php echo $form->labelEx($model,'ignoreColumns'); ?>
+		<?php echo $form->textField($model,'ignoreColumns',array('size'=>65)); ?>
+		<div class="tooltip">
+			A comma separated list of column that should be ignored. You don't need to 
+			add auto-incrementing columns to the list, they are automatically ignored.  
+		</div>
+		<?php echo $form->error($model,'ignoreColumns'); ?>
+	</div>
+
 <?php $this->endWidget(); ?>

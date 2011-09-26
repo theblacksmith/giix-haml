@@ -30,6 +30,8 @@ class GiixCrudCode extends CrudCode {
 	 * @var string The controller base class name.
 	 */
 	public $baseControllerClass = 'GxController';
+	
+	public $ignoreColumns = 'created,modified';
 
 	/**
 	 * Overrides the parent prepare() method to change the extension of the files for haml template
@@ -75,7 +77,7 @@ class GiixCrudCode extends CrudCode {
 	 */
 	public function rules() {
 		return array_merge(parent::rules(), array(
-			array('authtype, enable_ajax_validation', 'required'),
+			array('authtype, enable_ajax_validation, ignoreColumns', 'required'),
 		));
 	}
 
@@ -116,6 +118,7 @@ class GiixCrudCode extends CrudCode {
 
 		if (strtoupper($column->dbType) == 'TINYINT(1)'
 				|| strtoupper($column->dbType) == 'BIT'
+				|| strtoupper($column->dbType) == 'BIT(1)'
 				|| strtoupper($column->dbType) == 'BOOL'
 				|| strtoupper($column->dbType) == 'BOOLEAN') {
 			return "echo \$form->checkBox(\$model, '{$column->name}')";
@@ -130,6 +133,8 @@ class GiixCrudCode extends CrudCode {
 				'dateFormat' => 'yy-mm-dd',
 				),
 			));\n";
+		} else if(stripos($column->dbType, 'enum') === 0) {
+			return "echo \$form->enumDropDownList(\$model, '{$column->name}')";
 		} else if (stripos($column->dbType, 'text') !== false) { // Start of CrudCode::generateActiveField code.
 			return "echo \$form->textArea(\$model, '{$column->name}')";
 		} else {
@@ -386,5 +391,12 @@ class GiixCrudCode extends CrudCode {
 <p style="margin: 2px 0; position: relative; text-align: right; top: -15px; color: #668866;">icons by <a href="http://www.famfamfam.com/lab/icons/silk/" style="color: #668866;">famfamfam.com</a></p>
 EOM;
 	}
-
+	
+	/**
+	 * Returns wether to render a column or not 
+	 */
+	public function shouldRenderColumn($column)
+	{
+		return !$column->autoIncrement && (strpos($this->ignoreColumns, $column->name) === false);
+	}
 }
