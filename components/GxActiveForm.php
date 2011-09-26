@@ -18,21 +18,45 @@ class GxActiveForm extends CActiveForm {
 
 	/**
 	 * Renders a checkbox list for a model attribute.
-	 * This method is a wrapper of {@link GxHtml::activeCheckBoxList}.
-	 * #MethodTracker
-	 * This method is based on {@link CActiveForm::checkBoxList}, from version 1.1.7 (r3135). Changes:
-	 * <ul>
-	 * <li>Uses GxHtml.</li>
-	 * </ul>
-	 * @see CActiveForm::checkBoxList
-	 * @param CModel $model The data model.
-	 * @param string $attribute The attribute.
+	 * This method is a wrapper of {@link GxHtml::checkBoxList}.
+	 * Please check {@link GxHtml::checkBoxList} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model The data model
+	 * @param string $attribute The attribute
 	 * @param array $data Value-label pairs used to generate the check box list.
-	 * @param array $htmlOptions Addtional HTML options.
-	 * @return string The generated check box list.
+	 * @param array $htmlOptions Additional HTML attributes.
+	 * @return string The generated checkbox list
 	 */
 	public function checkBoxList($model, $attribute, $data, $htmlOptions = array()) {
 		return GxHtml::activeCheckBoxList($model, $attribute, $data, $htmlOptions);
 	}
 
+	/**
+	 * Renders a dropdown list for a model attribute of type ENUM.
+	 * This method is a wrapper of {@link GxHtml::checkBoxList}.
+	 * Please check {@link GxHtml::checkBoxList} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model The data model
+	 * @param string $attribute The attribute
+	 * @param array $htmlOptions Additional HTML attributes.
+	 * @return string The generated checkbox list
+	 */
+	public function enumDropDownList($model, $attribute, $htmlOptions = array()) {
+		return GxHtml::activeDropDownList ( $model, $attribute, $htmlOptions );
+	}
+	
+	/**
+	 * Renders a radio button list for a model attribute of type ENUM.
+	 * This method is a wrapper of {@link GxHtml::enumRadioButtonList}.
+	 * Please check {@link GxHtml::enumRadioButtonList} for detailed information
+	 * about the parameters for this method.
+	 * @param CModel $model The data model
+	 * @param string $attribute The attribute
+	 * @param array $htmlOptions Additional HTML attributes.
+	 * @return string The generated checkbox list
+	 */	
+	public function enumRadioButtonList($model, $attribute, $htmlOptions = array())
+	{
+		return GxHtml::enumRadioButtonList($model, $attribute, $htmlOptions);
+	}
 }

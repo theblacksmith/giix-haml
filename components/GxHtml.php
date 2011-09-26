@@ -184,4 +184,79 @@ class GxHtml extends CHtml {
 			throw new InvalidArgumentException(Yii::t('giix', 'The argument "data" must be of type string or array.'));
 	}
 
+	/**
+	 * Retrieves the possible ENUM values from the database
+	 * This method will extract the possible enum values from the database field type definition
+	 * and build an array with value => label pairs. The label is the translation of the
+	 * value in the 'enumValue' category.
+	 * 
+	 * @author Zaccaria
+	 * @author Saulo Vallory
+	 * 
+	 * @param CModel $model The data model
+	 * @param string $attribute The attribute name
+	 * @return array an array with value => label pairs of the possible values
+	 */
+	protected static function getEnumValues($model, $attribute) {
+		$attr = $attribute;
+		self::resolveName ( $model, $attr );
+		preg_match ( '/\((.*)\)/', $model->tableSchema->columns[$attr]->dbType, $matches );
+		
+		foreach ( explode ( ',', $matches [1] ) as $value ) {
+			$value = str_replace ( "'", null, $value );
+			$values[$value] = Yii::t('enumValue', $value );
+		}
+		
+		return $values;
+	}
+	
+	/**
+	 * Renders a dropdown list for a model attribute of type ENUM.
+	 * The options will be automatically added from the possible ENUM values.
+	 * The values will be translated using Yii::t('enumValue', value) to generate the labels.
+	 * 
+	 * @author Zaccaria
+	 * @author Saulo Vallory
+	 * 
+	 * @see CHtml::activeDropDownList
+	 * @param CModel $model The data model.
+	 * @param string $attribute The attribute.
+	 * @param array $htmlOptions Addtional HTML options.
+	 * @return string The generated dropdown list.
+	 */
+	public static function enumDropDownList($model, $attribute, $htmlOptions = array()) {
+		return self::activeDropDownList ( $model, $attribute, self::getEnumValues( $model, $attribute ), $htmlOptions );
+	}
+	
+	/**
+	 * Renders a radio button list for a model attribute of type ENUM.
+	 * The options will be automatically added from the possible ENUM values.
+	 * The values will be translated using Yii::t('enumValue', value) to generate the labels.
+	 * This method uses {@link CHtml::activeRadioButtonList} but encapsulates the list inside
+	 * a span and removes the <br/> tag between the radio and the label.
+	 * 
+	 * Output Example:
+	 * 	<span class="radio-button-list">
+	 * 		<input id="ytClient_contact_method" type="hidden" name="Client[contact_method]" value="" />
+	 * 		<input id="Client_contact_method_0" type="radio" name="Client[contact_method]" value="phone" />
+	 * 		<label for="Client_contact_method_0">phone</label>
+	 * 		<input id="Client_contact_method_1" type="radio" name="Client[contact_method]" value="email" />
+	 * 		<label for="Client_contact_method_1">email</label>
+	 *  </span>
+	 * 
+	 * @author Zaccaria
+	 * @author Saulo Vallory
+	 * 
+	 * @see CHtml::activeRadioButtonList
+	 * @param CModel $model The data model.
+	 * @param string $attribute The attribute.
+	 * @param array $htmlOptions Addtional HTML options.
+	 * @return string The generated radio button list.
+	 */
+	public static function enumRadioButtonList($model, $attribute, $htmlOptions = array())
+	{
+		return '<span class="radio-button-list">' . 
+							str_replace('<br/>', '', self::activeRadioButtonList($model, $attribute, self::getEnumValues($model, $attribute), $htmlOptions)) .
+					 '</span>';
+	}
 }
