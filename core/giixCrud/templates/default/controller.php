@@ -10,7 +10,7 @@
 class <?php echo $this->controllerClass; ?> extends <?php echo $this->baseControllerClass; ?> {
 
 <?php 
-	$authpath = 'ext.giix-core.giixCrud.templates.default.auth.';
+	$authpath = 'ext.giix-haml.core.giixCrud.templates.default.auth.';
 	Yii::app()->controller->renderPartial($authpath . $this->authtype);
 ?>
 

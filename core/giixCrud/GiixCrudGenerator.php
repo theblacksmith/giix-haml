@@ -16,7 +16,7 @@
  */
 class GiixCrudGenerator extends CCodeGenerator {
 
-	public $codeModel = 'ext.giix-core.giixCrud.GiixCrudCode';
+	public $codeModel = 'ext.giix-haml.core.giixCrud.GiixCrudCode';
 
 	/**
 	 * Returns the model names in an array.

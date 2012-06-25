@@ -9,7 +9,7 @@
  * @license http://giix.org/license/ New BSD License
  */
 Yii::import('system.gii.generators.model.ModelCode');
-Yii::import('ext.giix-core.helpers.*');
+Yii::import('ext.giix-haml.core.helpers.*');
 
 /**
  * GiixModelCode is the model for giix model generator.
