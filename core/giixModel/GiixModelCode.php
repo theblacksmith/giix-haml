@@ -9,7 +9,7 @@
  * @license http://giix.org/license/ New BSD License
  */
 Yii::import('system.gii.generators.model.ModelCode');
-Yii::import('ext.giix.core.helpers.*');
+Yii::import('ext.giix-core.helpers.*');
 
 /**
  * GiixModelCode is the model for giix model generator.
@@ -373,21 +373,4 @@ class GiixModelCode extends ModelCode {
 EOM;
 	}
 
-	/**
-	 * @internal Overwritten to implement singularization
-	 */
-	protected function generateClassName($tableName)
-	{
-		if($this->tableName===$tableName || ($pos=strrpos($this->tableName,'.'))!==false && substr($this->tableName,$pos+1)===$tableName)
-			return $this->modelClass;
-
-		$tableName=$this->removePrefix($tableName,false);
-		$className='';
-		foreach(explode('_',$tableName) as $name)
-		{
-			if($name!=='')
-				$className.=Inflector::singularize(ucfirst($name));
-		}
-		return $className;
-	}
 }

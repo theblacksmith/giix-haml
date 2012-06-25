@@ -472,8 +472,6 @@ abstract class GxActiveRecord extends CActiveRecord {
 				if ($batch) {
 					// Delete in batch mode.
 					if ($pivotModelStatic->deleteByPk($deleteMap) !== count($deleteMap)) {
-						if ($transacted)
-							$transaction->rollback();
 						return false;
 					}
 				} else {
@@ -481,8 +479,6 @@ abstract class GxActiveRecord extends CActiveRecord {
 					foreach ($deleteMap as $value) {
 						$pivotModel = GxActiveRecord::model($pivotClassName)->findByPk($value);
 						if (!$pivotModel->delete()) {
-							if ($transacted)
-								$transaction->rollback();
 							return false;
 						}
 					}
@@ -493,8 +489,6 @@ abstract class GxActiveRecord extends CActiveRecord {
 				$pivotModel = new $pivotClassName();
 				$pivotModel->setAttributes($value);
 				if (!$pivotModel->save($runValidation)) {
-					if ($transacted)
-						$transaction->rollback();
 					return false;
 				}
 			}

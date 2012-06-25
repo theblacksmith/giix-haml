@@ -1,13 +1,5 @@
 <?php
 $class=get_class($model);
-
-Yii::app()->clientScript->registerScriptFile(
-    Yii::app()->assetManager->publish(
-        Yii::getPathOfAlias('ext.giix.core.js').'/inflection.js'
-    ),
-    CClientScript::POS_END
-);
-
 Yii::app()->clientScript->registerScript('gii.model',"
 $('#{$class}_modelClass').change(function(){
 	$(this).data('changed',$(this).val()!='');
@@ -32,7 +24,7 @@ $('#{$class}_tableName').bind('keyup change', function(){
 		var modelClass='';
 		$.each(tableName.split('_'), function() {
 			if(this.length>0)
-				modelClass+=Inflector.singularize(this.substring(0,1).toUpperCase()+this.substring(1));
+				modelClass+=this.substring(0,1).toUpperCase()+this.substring(1);
 		});
 		model.val(modelClass);
 	}
