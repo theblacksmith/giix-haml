@@ -20,20 +20,26 @@ Giix-Haml may run on other setups, but there is no official suppport for them. T
 
 1. Copy the directoryies "core" and "components" from the downloaded archive, or clone this repository, 
 into your application's protected/extensions/giix-haml directory. You'll have to create the giix-haml directory.
+  
+  OR
+  ```
+  cd your-project/protected/extensions
+  git clone git://github.com/theblacksmith/giix-haml.git
+  ```
 
 2. Configure the gii generator path in your application, like:
 bq.
 
         'modules' => array(
             'gii' => array(
-        	'password'=>'[type your password here]',
+                'password'=>'[type your password here]',
                 'ipFilters'=>array('127.0.0.1','::1'),
                 'class' => 'system.gii.GiiModule',
-                    'generatorPaths' => array(
-                        'ext.giix-haml.core', // giix generators
-                    ),
+                'generatorPaths' => array(
+                    'ext.giix-haml.core', // giix generators
                 ),
             ),
+        ),
         . . .
 
 3. Configure your application to automatically load the giix component classes when needed, like:
