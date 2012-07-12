@@ -32,7 +32,36 @@ class GiixCrudCode extends CrudCode {
 	public $baseControllerClass = 'GxController';
 	
 	public $ignoreColumns = 'created,modified';
+	
+	/**
+	 * Overrides the parent prepare() method to change the extension of the files for haml template
+	 */
+	public function prepare() {
+		//parent::prepare();
+		
+		$this->files=array();
+		$templatePath=$this->templatePath;
+		$controllerTemplateFile=$templatePath.DIRECTORY_SEPARATOR.'controller.php';
 
+		$this->files[]=new CCodeFile(
+			$this->controllerFile,
+			$this->render($controllerTemplateFile)
+		);
+
+		$files=scandir($templatePath);
+		foreach($files as $file)
+		{
+			$ext = CFileHelper::getExtension($file);
+			if(is_file($templatePath.'/'.$file) && ($ext==='php' || $ext === 'haml') && $file!=='controller.php')
+			{
+				$this->files[]=new CCodeFile(
+					$this->viewPath.DIRECTORY_SEPARATOR.$file,
+					$this->render($templatePath.'/'.$file)
+				);
+			}
+		}
+	}
+	
 	/**
 	 * Adds the new model attributes (class properties) to the rules.
 	 * #MethodTracker
