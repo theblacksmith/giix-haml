@@ -14,7 +14,7 @@
  *
  * @author Rodrigo Coelho <rodrigo@giix.org>
  */
-abstract class GxController extends Controller {
+abstract class GxController extends CController {
 
 	/**
 	 * @var string The layout for the controller view.
